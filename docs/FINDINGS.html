@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Findings — Dunk Shot (HAL Laboratory, 1986)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html">The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html">The code</a><a href="FINDINGS.html" style=color:var(--tinta)>Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/HALLAZGOS.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="findings">Findings</h1>
+<p>What you cannot see by playing, with the address where it is and how it was measured.</p>
+<h2 id="the-court-is-56-columns-wide-and-is-seen-through-a-32-column-window">The court is 56 columns wide and is seen through a 32-column window</h2>
+<p>The whole court, with the stands and the SUPER PLAYERS DUNK SHOT * HAL LABORATORY banner, is a 56 × 24 map of patterns compressed at <code>0xB69E</code> (714 bytes giving 1,344). There is no hardware scrolling: <code>0x5F33</code> copies into the name table, row by row, the 32 columns starting at the one in 0xE830 (0 to 24), and <code>0x5E7C</code> moves it one column at a time when the ball crosses the centre. The 21 × 4 scoreboard (<code>0x77AB</code>) goes on top, at column 6.</p>
+<p><img src="imagenes/pista_area2.png" alt="The court with the second colour table"></p>
+<p>Measured by building the window at column 12 and checking it against two dumps of the match: 0 differences in names, patterns and colours.</p>
+<h2 id="every-player-is-four-sprites-hence-the-flicker">Every player is four sprites, hence the flicker</h2>
+<p>Hair, upper skin, shirt and lower skin: four 16 × 16 sprites per player, six players, plus the net, the ball, its shadow and the arrow. The TMS9918 only draws four sprites per line, so <code>0x5C0B</code> builds the seven groups in an order that changes every frame, <code>0x5BAB</code> copies them reversed as well, and the two orders go to two attribute tables (0x1B00 and 0x1F00) that register 5 alternates (<code>0x5B77</code>). The flicker is deliberate.</p>
+<p><img src="imagenes/sprites_fijos.png" alt="The fixed sprites"></p>
+<p>In the dumps, the 24 player sprites appear in a different order in the two tables, and the one shown is the one bit 2 of register 5 points at.</p>
+<h2 id="the-160-poses-and-the-32-looks">The 160 poses and the 32 looks</h2>
+<p>A pose is four pattern numbers (<code>0xA4CE</code>) and four offsets (<code>0xA38E</code>, one per group of four poses) that <code>0x5C40</code> subtracts from the position of the feet; the 196 patterns live in RAM, decompressed from <code>0x9725</code>, <code>0x9B08</code>, <code>0x9F80</code> and <code>0xA360</code>. Each player&#x27;s look is one of the 32 pairs at <code>0x80E4</code> (skin 0x0B, 0x0A or 0x01 and eleven hair colours) and the shirt is the team colour (0xEA2C/0xEA5C).</p>
+<p><img src="imagenes/poses_azul.png" alt="The poses with the blue shirt"></p>
+<p>Pose, patterns and colours are checked on the six players of two openMSX dumps: for each one, the four sprites in the attribute table give the same foot position once their offsets are added back, carry the colours skin-skin-hair-shirt, and their patterns in VRAM are those of the pose.</p>
+<h2 id="computer-teams-are-generated-by-level">Computer teams are generated by level</h2>
+<p>ELM, JNR, HIG, COL, YUG, ESP, USA and PRO are not stored rosters: they are levels 1 to 8. When one is chosen, <code>0x72CA</code> generates eight players with 30, 20 and 25 skill points plus 30 for each level above the first, and a random look taken from the Z80&#x27;s R register. The name is copied from the list at <code>0x7CA1</code> and the level is kept in byte 3 of the team.</p>
+<h2 id="teams-are-saved-to-tape-as-a-bsave">Teams are saved to tape as a BSAVE</h2>
+<p>SAVE DATA writes the team block (0xEC bytes: name, level, colour and eight 29-byte players) with the cassette BIOS, using the binary header, ten 0xD0 bytes, and a six-letter name: the team&#x27;s three letters and three 0x7F (<code>0x8C33</code>). LOAD DATA finds and reads it (<code>0x8C71</code>) and VERIFY compares it byte for byte (<code>0x8C87</code>). With no tape, the message is ERROR!</p>
+<h2 id="three-courts-one-colour-table-each">Three courts, one colour table each</h2>
+<p>COLOR OF COURT chooses between three compressed colour tables (<code>0xABA8</code>, <code>0xACB0</code> and <code>0xADB8</code>: 264 bytes each, 2,000 when decompressed) for the same 250 patterns. Green, blue and red; the stands and the banner do not change.</p>
+<p><img src="imagenes/pista_area3.png" alt="The red court"></p>
+<h2 id="the-computer-s-plays">The computer&#x27;s plays</h2>
+<p>The 720-byte table at <code>0xAF5F</code> is five formations with six variants each, and in every variant an eight-byte script per player: a delay and waypoints (Y, X, code) up to a 0x80. <code>0x6F48</code> picks the variant from the current formation and a random bit, and button 2 of the team with the ball in the opponent&#x27;s half moves on to the next one.</p>
+<h2 id="what-is-never-drawn-and-what-nobody-runs">What is never drawn and what nobody runs</h2>
+<p>Three court patterns (0x73, 0x85 and 0x86) and the E and S of an ESC in the logo&#x27;s pattern set (0xFB, 0xFC) are never shown; the C (0xFD) is, in the title. One sprite pattern, number 195, is used by no pose.</p>
+<p><img src="imagenes/sin_uso.png" alt="What is never drawn"></p>
+<p>And seventeen pieces of code nobody reaches: alternative entries, a five-digit counter (<code>0x7AAE</code>) and a routine that writes a zero into the ROM itself (<code>0x8B3C</code>), from when the program ran in RAM.</p>
+<p>At <code>0x4EEC</code>, besides, everything points to a bug in the original: it loads <code>ld hl,(0xE6DF)</code> where the surrounding code suggests <code>ld hl,0xE6DF</code>, and compares and writes at the address formed by &quot;who shot&quot; and &quot;left jumper&quot;, which is 0xFFFF at start-up. What it does is measured in the listing; what it was meant to do is not.</p>
+<footer><p><em>Dunk Shot</em> was published by HAL Laboratory for the MSX in 1986; it is 32 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

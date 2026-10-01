@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The code — Dunk Shot (HAL Laboratory, 1986)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html">The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html" style=color:var(--tinta)>The code</a><a href="FINDINGS.html">Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/EL-CODIGO.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="the-code">The code</h1>
+<h2 id="start-up-and-the-loop">Start-up and the loop</h2>
+<p>INIT (<code>0x4010</code>) sets the stack at 0xF200, enables the slot in page 2, hooks the frame interrupt to <code>0x606E</code> and starts: <code>0x5189</code> clears the RAM, <code>0x501F</code> sets SCREEN 2 and loads patterns, sprites and colours, <code>0x7322</code> leaves the teams ABC and DEF, and the loop at <code>0x4044</code> chains title (<code>0x839C</code>), wait (<code>0x8B28</code>), menu (<code>0x83BA</code>), SET-UP (<code>0x812F</code>) and match. The interrupt handles the players&#x27; turning, the falls, the net and the buttons (<code>0x60A0</code>-<code>0x62E3</code>).</p>
+<h2 id="the-sprites-and-the-flicker">The sprites and the flicker</h2>
+<p>Every frame, <code>0x5C40</code> works out each player&#x27;s four sprites: it subtracts the pose offsets (<code>0xA38E</code>) from the position of the feet and adjusts the height with the perspective curves at <code>0xB59E</code> and <code>0xB61E</code> (<code>0x5DE4</code>, <code>0x5DAF</code>). Since the TMS9918 draws no more than four sprites per line, <code>0x5C0B</code> builds the seven groups (six players and the fixed ones) in an order that changes every frame, <code>0x5BAB</code> copies them reversed into another buffer and the two go to the two attribute tables (0x1B00, 0x1F00); <code>0x5B77</code> flips bit 2 of register 5 to show one or the other. That is what makes the players flicker when they bunch up.</p>
+<p><img src="imagenes/poses.png" alt="The 160 poses"></p>
+<h2 id="the-window-over-the-court">The window over the court</h2>
+<p>The 56 × 24 map is in RAM (0xC400, decompressed by <code>0x5F8D</code>). <code>0x5F33</code> copies into the name table the 24 rows of 32 bytes starting at the column in 0xE830, with <code>0x5B07</code> (SETWRT and <code>outi</code>); <code>0x5E7C</code> decides when to move it. There is no fine scrolling: the screen jumps one column at a time.</p>
+<h2 id="drawing-into-vram">Drawing into VRAM</h2>
+<p>Three routines do it all: <code>0x5B07</code> writes BC bytes from HL to DE, <code>0x5B50</code> fills BC bytes with A and <code>0x5AF7</code> writes one byte at HL. On top of them go <code>0x7C1B</code> (a zero-terminated string), <code>0x7C29</code> (B rows of C characters), <code>0x7FC1</code> (a box with patterns 0xF5-0xF7 and 0x62-0x67) and the number printers at <code>0x7ACF</code>, <code>0x7ADA</code> and <code>0x7AA7</code>, which blank the leading zeros by counting in C the digits already written.</p>
+<h2 id="the-menu-selector">The menu selector</h2>
+<p><code>0x8AC9</code> takes the cursor position, the number of options and the ball pattern (0x6F); it reads with CHGET, moves up and down with 0x1E and 0x1F and returns any other key. The chosen option lives in 0xEFCD, whose bit 7 says whether the right-hand team is being dealt with.</p>
+<h2 id="the-computer">The computer</h2>
+<p>With the ball, <code>0xBB14</code> takes the player through five states (0xF009): pick a point towards the basket with sine and cosine from the tables at 0xC000, run to it, face the basket, go to the shooting spot and shoot, steal or pass according to chance and the +0x1D and +0x1E skills. Without the ball, <code>0xBD61</code> (0xF00A) goes for the ball carrier, marks him or stays put, and <code>0x76AE</code> measures the shooting zone. The plays at 0xEA89 give each player a script of waypoints to go to.</p>
+<h2 id="the-sound">The sound</h2>
+<p><code>0x8D42</code> starts piece A if its priority (<code>0x8F71</code>) is not lower than the one playing; <code>0x8D8B</code> runs every frame and <code>0x8DB2</code> interprets: 0x40-0xFF note (channel in the two high bits, index into the table of 64 periods), 0x20-0x25 mixer, 0x26-0x2F register, 0x33 jump, 0x34/0x35 call and return with its own stack in IX, 0x36/0x37 loop, 0x38-0x3B relative volume, 0x3D silence, 0x00-0x1F wait; a wait of zero ends the piece. Thirteen pieces, ten distinct: the music is piece 1 (and 8, the same pointer) and 4, 5 and 6 are the same one with three priorities.</p>
+<h2 id="chance">Chance</h2>
+<p>The Z80&#x27;s R register (<code>0x50E9</code>, <code>0x6F53</code>, <code>0x6F76</code>): one bit or one byte, as needed.</p>
+<h2 id="what-nobody-runs">What nobody runs</h2>
+<p>Seventeen pieces of code with no callers, declared in <code>src/dunkshot.entries</code> with their reason: alternative entries (<code>0x59BA</code>, <code>0x59E8</code>, <code>0x5AFD</code>), loose routines (<code>0x441D</code> negates HL, <code>0x6F76</code> gives 1 or 2 at random, <code>0x8D3B</code> waits for the sound to end), a five-digit counter (<code>0x7AAE</code>) and <code>0x8B3C</code>, which writes a zero at 0x785B, which is ROM: a leftover from when the program was tested in RAM.</p>
+<footer><p><em>Dunk Shot</em> was published by HAL Laboratory for the MSX in 1986; it is 32 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

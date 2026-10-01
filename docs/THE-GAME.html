@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The game — Dunk Shot (HAL Laboratory, 1986)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html" style=color:var(--tinta)>The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html">The code</a><a href="FINDINGS.html">Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/EL-JUEGO.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="the-game">The game</h1>
+<p>Dunk Shot is <b>three-on-three</b> basketball seen from the stands: a court almost twice as wide as the screen, two teams of three players on court (from a roster of eight) and a match in two halves of 5, 10, 15 or 20 minutes.</p>
+<p><img src="imagenes/pista_area1.png" alt="The whole court"></p>
+<h2 id="the-menus">The menus</h2>
+<p>Space takes you from the title to the first menu: <b>SET-UP</b>, <b>LEFT TEAM</b>, <b>RIGHT TEAM</b> and <b>TRADE</b>. Left alone, after 1,500 frames (<code>0x405E</code>) the demo starts.</p>
+<p>The two team screens have MAKE TEAM (a three-letter name and eight players of eight letters), LOAD DATA, READY-MADE, COMPUTER (the eight computer teams) and EDIT TEAM, with STARTERS to pick the three starters and SAVE DATA and VERIFY for the tape. TRADE swaps players between the two teams.</p>
+<p><img src="imagenes/equipo.png" alt="The team screen"></p>
+<p>SET-UP has PLAY, STARTERS, CHANGE SIDES, COLOR OF WEAR, LENGTH OF HALF (5, 10, 15 or 20 minutes: <code>0x73A3</code> multiplies by 300 seconds) and COLOR OF COURT, the three courts. At start-up both teams belong to the computer: with PLAY the match plays itself.</p>
+<p><img src="imagenes/setup.png" alt="SET-UP"></p>
+<h2 id="the-teams">The teams</h2>
+<p>A player takes 29 bytes (<code>0x7E2E</code> returns the field asked for): eight letters of name, the look (0-31, one of the 32 skin-and-hair pairs at <code>0x80E4</code>) and the skills, which the statistics screen labels <b>S</b>, <b>J</b> and <b>R</b>. A team is 0xEC bytes: three letters, the level, the colour and the eight players.</p>
+<p>The eight computer teams, ELM, JNR, HIG, COL, YUG, ESP, USA and PRO, are levels 1 to 8: <code>0x72CA</code> generates their players with 30, 20 and 25 points plus 30 for each level above the first, and a random look. That 0xEC-byte block is what SAVE DATA writes to tape and what TRADE swaps (<code>0x8201</code>).</p>
+<p><img src="imagenes/colores_jugadores.png" alt="The 32 looks"></p>
+<h2 id="the-match">The match</h2>
+<p>Six players on court, each with their two fixed team-mates (<code>0xBF1E</code>), the ball and the net. The whole court is 56 columns (<code>0xB69E</code>); the screen shows 32 and jumps one column at a time (<code>0x5F33</code>, <code>0x5E7C</code>). At the top, the scoreboard: names, team fouls (TF), points, time and half.</p>
+<p><img src="imagenes/partido.png" alt="The match at the tip-off"></p>
+<p>A basket is worth 2 inside the key and from mid-range, 3 from forty or more away from the basket and 1 for a free throw (<code>0x772E</code>); three seconds in the key (210 frames, <code>0x76EA</code>) is 3 SECOND.</p>
+<p>The fouls and violations the game calls are the twelve at <code>0x796F</code>: TRAVELLING, 3, 5, 10 and 30 SECOND, CHARGING, HACKING, HOLDING, PUSHING and BLOCKING, plus the two counter labels. The statistics screen carries FOULS and FATIGUE per player. At the break, HALF TIME; at the end, GAME OVER and PUSH ANY KEY (<code>0x8BF3</code>, <code>0x8C21</code>).</p>
+<h2 id="the-controls">The controls</h2>
+<p>Read from the code (<code>0xB9C3</code> and <code>0xBA16</code>): the human team on the left uses joystick 1 or, failing that, the cursor keys with <code>[</code> to shoot and RETURN to pass; the one on the right, joystick 2 or four keys from rows 3 and 5 of the keyboard matrix with TAB and CTRL. Button 2 of the team with the ball in the opponent&#x27;s half changes the play; the one of the team without the ball changes the controlled defender (<code>0x622A</code>, <code>0x627F</code>). The menus take the cursor keys, space and ESC.</p>
+<footer><p><em>Dunk Shot</em> was published by HAL Laboratory for the MSX in 1986; it is 32 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>
