@@ -38,7 +38,8 @@ make
 
 Los detalles, en [Empezar](docs/es/EMPEZAR.md). `make parche` genera el
 [parche MSX2](docs/es/EL-PARCHE-MSX2.md), que quita casi todo el parpadeo en
-un MSX2 y sigue jugándose en un MSX1.
+un MSX2 y sigue jugándose en un MSX1; tiene repositorio propio,
+[DunkShot-MSX2-Patch](https://github.com/antxiko/DunkShot-MSX2-Patch).
 
 ## Aviso
 

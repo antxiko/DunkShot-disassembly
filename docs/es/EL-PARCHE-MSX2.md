@@ -1,5 +1,9 @@
 # El parche MSX2
 
+El parche tiene repositorio y web propios,
+[DunkShot-MSX2-Patch](https://antxiko.github.io/DunkShot-MSX2-Patch/es/), con
+el IPS, las herramientas y las medidas; esta página es el resumen.
+
 Dunk Shot parpadea porque cada jugador son cuatro sprites apilados y el
 TMS9918 no pinta más de cuatro por línea: el juego los reparte a propósito:
 los siete grupos van ordenados por profundidad a una tabla de atributos y al

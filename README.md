@@ -38,7 +38,8 @@ make
 
 The details are in [Getting started](docs/GETTING-STARTED.md). `make parche`
 builds the [MSX2 patch](docs/THE-MSX2-PATCH.md), which removes most of the
-flicker on an MSX2 and still plays on an MSX1.
+flicker on an MSX2 and still plays on an MSX1; it has its own repository,
+[DunkShot-MSX2-Patch](https://github.com/antxiko/DunkShot-MSX2-Patch).
 
 ## Notice
 

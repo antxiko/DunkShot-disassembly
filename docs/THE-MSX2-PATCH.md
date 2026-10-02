@@ -1,5 +1,9 @@
 # The MSX2 patch
 
+The patch has its own repository and website,
+[DunkShot-MSX2-Patch](https://antxiko.github.io/DunkShot-MSX2-Patch/), with
+the IPS, the tools and the measurements; this page is the summary.
+
 Dunk Shot flickers because every player is four sprites stacked on top of
 each other and the TMS9918 draws no more than four per line: the game shares
 them out on purpose: the seven groups go sorted by depth into one attribute
