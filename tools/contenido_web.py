@@ -100,7 +100,9 @@ HALLAZGOS = {
          "cambia cada cuadro, <code>0x5BAB</code> los copia también al revés y "
          "los dos órdenes van a dos tablas de atributos (0x1B00 y 0x1F00) que "
          "el registro 5 alterna (<code>0x5B77</code>). El parpadeo está "
-         "programado a propósito.</p>"),
+         "programado a propósito. En un MSX2, con ocho sprites por línea, "
+         "<a href=\"EL-PARCHE-MSX2.html\">un parche de 164 bytes</a> lo baja de "
+         "66,7 sprites sin pintar por cuadro a 1,7.</p>"),
         ("Las 160 poses y los 32 aspectos",
          "<p>Una pose son cuatro números de patrón (<code>0xA4CE</code>) y "
          "cuatro desplazamientos (<code>0xA38E</code>, uno por grupo de cuatro "
@@ -170,7 +172,9 @@ HALLAZGOS = {
          "every frame, <code>0x5BAB</code> copies them reversed as well, and "
          "the two orders go to two attribute tables (0x1B00 and 0x1F00) that "
          "register 5 alternates (<code>0x5B77</code>). The flicker is "
-         "deliberate.</p>"),
+         "deliberate. On an MSX2, with eight sprites per line, "
+         "<a href=\"THE-MSX2-PATCH.html\">a 164-byte patch</a> brings it down "
+         "from 66.7 sprites not drawn per frame to 1.7.</p>"),
         ("The 160 poses and the 32 looks",
          "<p>A pose is four pattern numbers (<code>0xA4CE</code>) and four "
          "offsets (<code>0xA38E</code>, one per group of four poses) that "

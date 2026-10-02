@@ -7,6 +7,7 @@ bytes; `make comprueba` checks the sha256). The ROM is not distributed.
     make            # listing, reassembly, checks and tests
     make imagenes   # the website pictures, from the ROM
     make web        # the bilingual website in docs/
+    make parche     # the MSX2 patch: work/dunkshot_msx2.rom and parche/dunkshot_msx2.ips
 
 `make` generates `src/dunkshot.asm` from the binary and the notes
 (`src/dunkshot.notes`), reassembles it with Pasmo and checks that the exact
@@ -27,6 +28,9 @@ that not a single byte is left unassigned.
 - `tools/sonido.py` walks the thirteen pieces the way the engine reads them.
 - `tools/lanza_vuelca.sh` and `tools/omsx_vuelca.tcl`: an openMSX that presses
   keys at the given instants and dumps VRAM, RAM and registers.
+- `tools/parche_msx2.py` builds the MSX2 patch and `tools/omsx_parpadeo.tcl`
+  with `tools/lanza_parpadeo.sh` measures the flicker, frame by frame
+  ([The MSX2 patch](THE-MSX2-PATCH.md)).
 - `tools/densidad.py`, `tools/huecos.py`, `tools/margen.py` and
   `tools/sin_bautizar.py`: the measure of the comments.
 

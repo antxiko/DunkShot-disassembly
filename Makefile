@@ -93,7 +93,12 @@ web: imagenes
 	python3 tools/make_web.py docs/imagenes docs/es/index.html es
 	python3 tools/check_enlaces.py docs
 
+# EL PARCHE MSX2: sprites en modo 2 (ocho por linea) en un MSX2, el mismo
+# fichero sigue valiendo en un MSX1. Necesita pasmo en el PATH (o PASMO=...).
+parche: $(ROM)
+	python3 tools/parche_msx2.py $(ROM) $(WORK)/dunkshot_msx2.rom parche/dunkshot_msx2.ips parche/parche_msx2.asm
+
 clean:
 	rm -rf $(WORK)/dunkshot.trace.json $(WORK)/dunkshot.blocks
 
-.PHONY: all comprueba trace listado verify sanity test densidad imagenes coteja web clean
+.PHONY: all comprueba trace listado verify sanity test densidad imagenes coteja web parche clean

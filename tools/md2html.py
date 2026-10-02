@@ -20,21 +20,23 @@ from estilo_web import ESTILO  # noqa: E402
 
 # Un menu por idioma. La web se publica en ingles en la raiz de docs/ y en
 # castellano bajo docs/es/. Son las siete paginas del contrato por idioma,
-# mas la portada.
+# mas la portada y la del parche MSX2.
 NAV_EN = [("index.html", "Home"), ("GETTING-STARTED.html", "Start"),
           ("THE-GAME.html", "The game"),
           ("THE-CARTRIDGE.html", "The cartridge"),
           ("THE-CODE.html", "The code"),
           ("FINDINGS.html", "Findings"),
           ("IN-THE-EMULATOR.html", "In the emulator"),
-          ("OPEN-QUESTIONS.html", "Open questions")]
+          ("OPEN-QUESTIONS.html", "Open questions"),
+          ("THE-MSX2-PATCH.html", "MSX2 patch")]
 NAV_ES = [("index.html", "Portada"), ("EMPEZAR.html", "Empezar"),
           ("EL-JUEGO.html", "El juego"),
           ("EL-CARTUCHO.html", "El cartucho"),
           ("EL-CODIGO.html", "El código"),
           ("HALLAZGOS.html", "Hallazgos"),
           ("EN-EL-EMULADOR.html", "En el emulador"),
-          ("PREGUNTAS-ABIERTAS.html", "Preguntas abiertas")]
+          ("PREGUNTAS-ABIERTAS.html", "Preguntas abiertas"),
+          ("EL-PARCHE-MSX2.html", "Parche MSX2")]
 
 # Cada documento se llama distinto en cada idioma, asi que el selector de idioma
 # necesita saber cual es la pareja de cada pagina.
@@ -44,7 +46,8 @@ _PAREJAS = [("GETTING-STARTED.html", "EMPEZAR.html"),
             ("THE-CODE.html", "EL-CODIGO.html"),
             ("FINDINGS.html", "HALLAZGOS.html"),
             ("IN-THE-EMULATOR.html", "EN-EL-EMULADOR.html"),
-            ("OPEN-QUESTIONS.html", "PREGUNTAS-ABIERTAS.html")]
+            ("OPEN-QUESTIONS.html", "PREGUNTAS-ABIERTAS.html"),
+            ("THE-MSX2-PATCH.html", "EL-PARCHE-MSX2.html")]
 PAREJA = {}
 for _en, _es in _PAREJAS:
     PAREJA[_en] = _es

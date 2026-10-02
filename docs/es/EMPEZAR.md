@@ -7,6 +7,7 @@ bytes; `make comprueba` verifica el sha256). La ROM no se distribuye.
     make            # listado, reensamblado, controles y tests
     make imagenes   # las imágenes de la web, desde la ROM
     make web        # la web bilingüe en docs/
+    make parche     # el parche MSX2: work/dunkshot_msx2.rom y parche/dunkshot_msx2.ips
 
 `make` genera `src/dunkshot.asm` desde el binario y las notas
 (`src/dunkshot.notes`), lo reensambla con Pasmo y comprueba que sale la ROM
@@ -27,6 +28,9 @@ datos y que no quede un byte sin asignar.
 - `tools/sonido.py` recorre las trece piezas como las lee el motor.
 - `tools/lanza_vuelca.sh` y `tools/omsx_vuelca.tcl`: un openMSX que pulsa teclas
   en los instantes que se le dicen y vuelca VRAM, RAM y registros.
+- `tools/parche_msx2.py` genera el parche MSX2 y `tools/omsx_parpadeo.tcl`
+  con `tools/lanza_parpadeo.sh` mide el parpadeo, cuadro a cuadro ([El
+  parche MSX2](EL-PARCHE-MSX2.md)).
 - `tools/densidad.py`, `tools/huecos.py`, `tools/margen.py` y
   `tools/sin_bautizar.py`: la medida de los comentarios.
 

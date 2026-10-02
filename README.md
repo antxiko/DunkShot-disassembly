@@ -36,7 +36,9 @@ sha256  a1891e038566596a9f67067b8ea4694709aa9fee93c8ac0379360b30ea3abe62
 make
 ```
 
-The details are in [Getting started](docs/GETTING-STARTED.md).
+The details are in [Getting started](docs/GETTING-STARTED.md). `make parche`
+builds the [MSX2 patch](docs/THE-MSX2-PATCH.md), which removes most of the
+flicker on an MSX2 and still plays on an MSX1.
 
 ## Notice
 

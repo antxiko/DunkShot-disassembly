@@ -24,7 +24,9 @@ players, plus the net, the ball, its shadow and the arrow. The TMS9918 only
 draws four sprites per line, so `0x5C0B` builds the seven groups in an order
 that changes every frame, `0x5BAB` copies them reversed as well, and the two
 orders go to two attribute tables (0x1B00 and 0x1F00) that register 5
-alternates (`0x5B77`). The flicker is deliberate.
+alternates (`0x5B77`). The flicker is deliberate. On an MSX2, with eight
+sprites per line, [a 164-byte patch](THE-MSX2-PATCH.md) brings it down from
+66.7 sprites not drawn per frame to 1.7.
 
 ![The fixed sprites](imagenes/sprites_fijos.png)
 

@@ -12,7 +12,8 @@ set DESDE $::env(DS_DESDE)
 set HASTA $::env(DS_HASTA)
 set LIMITE $::env(DS_LIMITE)
 set TECLAS [expr {[info exists ::env(DS_TECLAS)] ? $::env(DS_TECLAS) : ""}]
-set throttle off
+# DS_THROTTLE=on para verlo a velocidad real; sin el, a toda maquina
+set throttle [expr {[info exists ::env(DS_THROTTLE)] ? $::env(DS_THROTTLE) : "off"}]
 set cuadros 0
 set sobrantes 0
 set lineas_llenas 0
@@ -27,9 +28,10 @@ proc mide {} {
     global cuadros sobrantes lineas_llenas peor lista LIMITE r0s
     set r5 [debug read "VDP regs" 5]
     set r0 [debug read "VDP regs" 0]
-    # En el modo de sprites 2 (M4, SCREEN 4) el VDP ignora los bits 0-2 de R5
+    # En el modo de sprites 2 (M4, SCREEN 4) el VDP ignora los bits 0-2 de R5:
+    # senalan un bloque de 1 KB, colores en la primera mitad y atributos a +0x200
     if {$r0 & 0x04} {
-        set sat [expr {($r5 & 0xF8) << 7}]
+        set sat [expr {(($r5 & 0xF8) << 7) + 0x200}]
         set terminador 216
     } else {
         set sat [expr {($r5 & 0x7F) << 7}]

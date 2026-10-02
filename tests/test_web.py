@@ -109,11 +109,11 @@ class LaGaleria(unittest.TestCase):
             self.assertTrue(es and en, fich)
         self.assertTrue(os.path.exists(os.path.join(imgdir, cw.LOGOTIPO)))
 
-    def test_las_siete_paginas_en_los_dos_idiomas(self):
+    def test_las_ocho_paginas_en_los_dos_idiomas(self):
         en = {"GETTING-STARTED", "THE-GAME", "THE-CARTRIDGE", "THE-CODE",
-              "FINDINGS", "IN-THE-EMULATOR", "OPEN-QUESTIONS"}
+              "FINDINGS", "IN-THE-EMULATOR", "OPEN-QUESTIONS", "THE-MSX2-PATCH"}
         es = {"EMPEZAR", "EL-JUEGO", "EL-CARTUCHO", "EL-CODIGO",
-              "HALLAZGOS", "EN-EL-EMULADOR", "PREGUNTAS-ABIERTAS"}
+              "HALLAZGOS", "EN-EL-EMULADOR", "PREGUNTAS-ABIERTAS", "EL-PARCHE-MSX2"}
         for carpeta, nombres in (("docs", en), (os.path.join("docs", "es"), es)):
             hay = {fn[:-3] for fn in os.listdir(os.path.join(RAIZ, carpeta)) if fn.endswith(".md")}
             self.assertTrue(nombres <= hay, (carpeta, nombres - hay))

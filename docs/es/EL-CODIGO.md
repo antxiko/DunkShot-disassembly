@@ -20,7 +20,9 @@ línea, `0x5C0B` monta los siete grupos (seis jugadores y los fijos) en un
 orden que cambia cada cuadro, `0x5BAB` los copia al revés en otro búfer y los
 dos van a las dos tablas de atributos (0x1B00, 0x1F00); `0x5B77` cambia el
 bit 2 del registro 5 para enseñar una u otra. Es lo que hace que los
-jugadores parpadeen cuando se juntan.
+jugadores parpadeen cuando se juntan. En un MSX2 el V9938 pinta ocho por
+línea: [El parche MSX2](EL-PARCHE-MSX2.md) lleva el juego ahí, medido antes y
+después.
 
 ![Las 160 poses](../imagenes/poses.png)
 

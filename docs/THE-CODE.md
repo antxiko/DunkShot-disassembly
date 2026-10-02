@@ -20,7 +20,8 @@ the seven groups (six players and the fixed ones) in an order that changes
 every frame, `0x5BAB` copies them reversed into another buffer and the two go
 to the two attribute tables (0x1B00, 0x1F00); `0x5B77` flips bit 2 of
 register 5 to show one or the other. That is what makes the players flicker
-when they bunch up.
+when they bunch up. On an MSX2 the V9938 draws eight per line: [The MSX2
+patch](THE-MSX2-PATCH.md) takes the game there, measured before and after.
 
 ![The 160 poses](imagenes/poses.png)
 

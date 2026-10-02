@@ -36,7 +36,9 @@ sha256  a1891e038566596a9f67067b8ea4694709aa9fee93c8ac0379360b30ea3abe62
 make
 ```
 
-Los detalles, en [Empezar](docs/es/EMPEZAR.md).
+Los detalles, en [Empezar](docs/es/EMPEZAR.md). `make parche` genera el
+[parche MSX2](docs/es/EL-PARCHE-MSX2.md), que quita casi todo el parpadeo en
+un MSX2 y sigue jugándose en un MSX1.
 
 ## Aviso
 
