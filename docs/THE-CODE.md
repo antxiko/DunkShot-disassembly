@@ -15,11 +15,12 @@ handles the players' turning, the falls, the net and the buttons
 Every frame, `0x5C40` works out each player's four sprites: it subtracts the
 pose offsets (`0xA38E`) from the position of the feet and adjusts the height
 with the perspective curves at `0xB59E` and `0xB61E` (`0x5DE4`, `0x5DAF`).
-Since the TMS9918 draws no more than four sprites per line, `0x5C0B` builds
-the seven groups (six players and the fixed ones) in an order that changes
-every frame, `0x5BAB` copies them reversed into another buffer and the two go
-to the two attribute tables (0x1B00, 0x1F00); `0x5B77` flips bit 2 of
-register 5 to show one or the other. That is what makes the players flicker
+Since the TMS9918 draws no more than four sprites per line, `0x5E1B` sorts the
+seven groups (six players and the fixed ones) by depth, the nearest first,
+`0x5C0B` builds their attributes in that order, `0x5BAB` copies them reversed
+into another buffer and the two go to the two attribute tables (0x1B00,
+0x1F00); `0x5B77` flips bit 2 of register 5 every frame to show one or the
+other: one frame the near players are in front, the next the far ones. That is what makes the players flicker
 when they bunch up. On an MSX2 the V9938 draws eight per line: [The MSX2
 patch](THE-MSX2-PATCH.md) takes the game there, measured before and after.
 

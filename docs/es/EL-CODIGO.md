@@ -16,10 +16,12 @@ Cada cuadro, `0x5C40` calcula los cuatro sprites de cada jugador: a la
 posición de los pies le resta los desplazamientos de la pose (`0xA38E`) y
 ajusta la altura con las curvas de perspectiva de `0xB59E` y `0xB61E`
 (`0x5DE4`, `0x5DAF`). Como el TMS9918 no pinta más de cuatro sprites por
-línea, `0x5C0B` monta los siete grupos (seis jugadores y los fijos) en un
-orden que cambia cada cuadro, `0x5BAB` los copia al revés en otro búfer y los
-dos van a las dos tablas de atributos (0x1B00, 0x1F00); `0x5B77` cambia el
-bit 2 del registro 5 para enseñar una u otra. Es lo que hace que los
+línea, `0x5E1B` ordena los siete grupos (seis jugadores y los fijos) por
+profundidad, el más cercano primero, `0x5C0B` monta sus atributos en ese
+orden, `0x5BAB` los copia al revés en otro búfer y los dos van a las dos
+tablas de atributos (0x1B00, 0x1F00); `0x5B77` cambia cada cuadro el bit 2
+del registro 5 para enseñar una u otra: un cuadro van delante los cercanos y
+al siguiente los lejanos. Es lo que hace que los
 jugadores parpadeen cuando se juntan. En un MSX2 el V9938 pinta ocho por
 línea: [El parche MSX2](EL-PARCHE-MSX2.md) lleva el juego ahí, medido antes y
 después.

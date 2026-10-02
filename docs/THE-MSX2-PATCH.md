@@ -2,8 +2,8 @@
 
 Dunk Shot flickers because every player is four sprites stacked on top of
 each other and the TMS9918 draws no more than four per line: the game shares
-them out on purpose, rotating seven groups every frame between two attribute
-tables ([The code](THE-CODE.md#the-sprites-and-the-flicker)). The V9938 of
+them out on purpose: the seven groups go sorted by depth into one attribute
+table and reversed into another, shown on alternate frames ([The code](THE-CODE.md#the-sprites-and-the-flicker)). The V9938 of
 the MSX2 draws eight per line, so the same cartridge can stop sharing them
 out. `parche/dunkshot_msx2.ips` is a 292-byte IPS patch that does that: 164
 bytes changed in 24 stretches, and the result still plays on an MSX1 as the
@@ -25,10 +25,12 @@ are the same.
 | patched | Philips_NMS_8250 (MSX2, 50 Hz) | 1,505 | 1.7 | 22 |
 
 On the MSX1 the patched cartridge behaves like the original: register 5
-alternates between its two tables, 899 frames each. On the MSX2 what is
-left are the moments when five or six players pile up on the same lines
-with the ball and its shadow, more than eight; the game's own rotation still
-shares those out. The match clock runs at the same pace.
+alternates between its two tables, 899 frames each. On the MSX2 the VDP always
+shows the table sorted by depth, the nearest player in front, so who is in
+front no longer changes from frame to frame; what is left are the moments
+when five or six players pile up on the same lines with the ball and its
+shadow, more than eight, and then it is the farthest sprites, the ones
+behind, that are not drawn. The match clock runs at the same pace.
 
     sh tools/lanza_parpadeo.sh work/p_msx1 C-BIOS_MSX1_JP dunkshot.rom 4 16 46 "4 8 0x01 7 8 0x01 10 8 0x01"
     sh tools/lanza_parpadeo.sh work/p_msx2 Philips_NMS_8250 work/dunkshot_msx2.rom 8 20 50 "8 8 0x01 11 8 0x01 14 8 0x01"
@@ -59,8 +61,8 @@ Below the 16 KB of an MSX1 the game leaves only 0x3C00-0x3FFF unused (the
 sprite patterns end at 0x3BBF), so: colours at 0x3C00-0x3DFF, attributes at
 0x3E00, and the second table the MSX1 alternates at 0x3F00. On an MSX1,
 R5 = 0x7C or 0x7E points at those two tables; on an MSX2, R5 is always 0x7F
-and the VDP shows 0x3E00 both frames, the rotated list of 0xE7B0, from which
-the colours are taken. No pattern moves.
+and the VDP shows 0x3E00 both frames, the list sorted by depth of 0xE7B0, from
+which the colours are taken. No pattern moves.
 
 ## What changes in the cartridge
 
@@ -73,7 +75,7 @@ the colours are taken. No pattern moves.
   showing.
 - `0x5BE6`, `0x5BF2`: the two copies per frame go to 0x3E00 and 0x3F00; the
   second continues at `0x7AAE` with the colour table: the 32 colours of the
-  list at 0xE7B0, 16 bytes each, to 0x3C00 with `out` and interrupts off
+  sorted list at 0xE7B0, 16 bytes each, to 0x3C00 with `out` and interrupts off
   (`0x6EA0`). On an MSX1 it returns at once.
 - `0x5BFB`, `0x7374`, `0x8057`: the ends of the list write 0xD0 and, in the
   next entry, 0xD8 (`0x6EC9`).

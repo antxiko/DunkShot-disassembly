@@ -20,10 +20,11 @@ del partido: 0 diferencias en nombres, patrones y colores.
 
 Pelo, piel de arriba, camiseta y piel de abajo: cuatro sprites de 16 × 16 por
 jugador, seis jugadores, más la red, el balón, su sombra y la flecha. El
-TMS9918 solo pinta cuatro sprites por línea, así que `0x5C0B` monta los siete
-grupos en un orden que cambia cada cuadro, `0x5BAB` los copia también al
-revés y los dos órdenes van a dos tablas de atributos (0x1B00 y 0x1F00) que el
-registro 5 alterna (`0x5B77`). El parpadeo está programado a propósito. En
+TMS9918 solo pinta cuatro sprites por línea, así que `0x5E1B` ordena los siete
+grupos por profundidad, `0x5C0B` los monta en ese orden, `0x5BAB` los copia
+también al revés y los dos órdenes van a dos tablas de atributos (0x1B00 y
+0x1F00) que el registro 5 alterna cada cuadro (`0x5B77`): un cuadro van
+delante los cercanos y al siguiente los lejanos. El parpadeo está programado a propósito. En
 un MSX2, con ocho sprites por línea, [un parche de 164 bytes](EL-PARCHE-MSX2.md)
 lo baja de 66,7 sprites sin pintar por cuadro a 1,7.
 

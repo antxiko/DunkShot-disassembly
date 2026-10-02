@@ -1,8 +1,9 @@
 # El parche MSX2
 
 Dunk Shot parpadea porque cada jugador son cuatro sprites apilados y el
-TMS9918 no pinta más de cuatro por línea: el juego los reparte a propósito,
-rotando siete grupos cada cuadro entre dos tablas de atributos ([El
+TMS9918 no pinta más de cuatro por línea: el juego los reparte a propósito:
+los siete grupos van ordenados por profundidad a una tabla de atributos y al
+revés a otra, y se enseñan en cuadros alternos ([El
 código](EL-CODIGO.md#los-sprites-y-el-parpadeo)). El V9938 del MSX2 pinta
 ocho por línea, así que el mismo cartucho puede dejar de repartirlos.
 `parche/dunkshot_msx2.ips` es un parche IPS de 292 bytes que hace eso: 164
@@ -25,10 +26,12 @@ dos partidos iguales.
 | parcheado | Philips_NMS_8250 (MSX2, 50 Hz) | 1.505 | 1,7 | 22 |
 
 En el MSX1 el cartucho parcheado se comporta como el original: el registro 5
-alterna entre sus dos tablas, 899 cuadros cada una. En el MSX2 lo que queda
-son los momentos en que cinco o seis jugadores se amontonan en las mismas
-líneas con el balón y su sombra, más de ocho; la rotación del propio juego
-sigue repartiendo esos. El reloj del partido va al mismo paso.
+alterna entre sus dos tablas, 899 cuadros cada una. En el MSX2 el VDP enseña
+siempre la tabla ordenada por profundidad, el jugador más cercano delante,
+así que quién va delante ya no cambia de un cuadro a otro; lo que queda son
+los momentos en que cinco o seis jugadores se amontonan en las mismas líneas
+con el balón y su sombra, más de ocho, y entonces son los sprites más
+lejanos, los de atrás, los que no se pintan. El reloj del partido va al mismo paso.
 
     sh tools/lanza_parpadeo.sh work/p_msx1 C-BIOS_MSX1_JP dunkshot.rom 4 16 46 "4 8 0x01 7 8 0x01 10 8 0x01"
     sh tools/lanza_parpadeo.sh work/p_msx2 Philips_NMS_8250 work/dunkshot_msx2.rom 8 20 50 "8 8 0x01 11 8 0x01 14 8 0x01"
@@ -59,8 +62,8 @@ Bajo los 16 KB de un MSX1 el juego solo deja sin usar 0x3C00-0x3FFF (los
 patrones de sprite acaban en 0x3BBF), así que: colores en 0x3C00-0x3DFF,
 atributos en 0x3E00, y la segunda tabla que el MSX1 alterna en 0x3F00. En un
 MSX1, R5 = 0x7C o 0x7E señala esas dos tablas; en un MSX2, R5 vale siempre
-0x7F y el VDP enseña 0x3E00 los dos cuadros, la lista rotada de 0xE7B0, de la
-que salen los colores. No se mueve ningún patrón.
+0x7F y el VDP enseña 0x3E00 los dos cuadros, la lista ordenada por profundidad de
+0xE7B0, de la que salen los colores. No se mueve ningún patrón.
 
 ## Lo que cambia en el cartucho
 
@@ -73,7 +76,7 @@ que salen los colores. No se mueve ningún patrón.
   vista.
 - `0x5BE6`, `0x5BF2`: las dos copias por cuadro van a 0x3E00 y 0x3F00; la
   segunda sigue en `0x7AAE` con la tabla de colores: los 32 colores de la
-  lista de 0xE7B0, 16 bytes cada uno, a 0x3C00 con `out` y sin
+  lista ordenada de 0xE7B0, 16 bytes cada uno, a 0x3C00 con `out` y sin
   interrupciones (`0x6EA0`). En un MSX1 vuelve sin hacer nada.
 - `0x5BFB`, `0x7374`, `0x8057`: los fines de lista escriben 0xD0 y, en la
   entrada siguiente, 0xD8 (`0x6EC9`).
