@@ -45,3 +45,7 @@ flicker on an MSX2 and still plays on an MSX1; it has its own repository,
 
 The game belongs to HAL Laboratory; only the analysis, the comments and the
 tools are here. The ROM is not distributed. See [LEGAL-NOTICE.md](LEGAL-NOTICE.md).
+
+## The other ROM
+
+The corrected GoodMSX `[a]` ROM is the same program, rebuilt and with fixes (fouls, scoring, defence). What differs: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md) (Spanish). Its MSX2 patch is in the patch repository.

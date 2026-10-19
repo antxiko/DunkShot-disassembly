@@ -45,3 +45,7 @@ un MSX2 y sigue jugándose en un MSX1; tiene repositorio propio,
 
 El juego es de HAL Laboratory; aquí solo están el análisis, los comentarios y
 las herramientas. La ROM no se distribuye. Ver [AVISO-LEGAL.md](AVISO-LEGAL.md).
+
+## La otra ROM
+
+La ROM corregida GoodMSX `[a]` es el mismo programa reensamblado y con arreglos (faltas, puntuacion, defensa). Que cambia: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md). Su parche MSX2 esta en el repositorio del parche.
