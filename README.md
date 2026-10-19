@@ -48,4 +48,4 @@ tools are here. The ROM is not distributed. See [LEGAL-NOTICE.md](LEGAL-NOTICE.m
 
 ## The other ROM
 
-The corrected GoodMSX `[a]` ROM is the same program, rebuilt and with fixes (fouls, scoring, defence). What differs: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md) (Spanish). Its MSX2 patch is in the patch repository.
+The corrected GoodMSX `[a]` ROM is the same program, rebuilt and with fixes (fouls, scoring, defence). What differs: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md) (Spanish). Its own commented disassembly is in [`rom_a/`](rom_a/) (`make -C rom_a`), and its MSX2 patch is in the patch repository.

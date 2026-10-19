@@ -1,0 +1,65 @@
+# Puntos de entrada que el trazado NO puede deducir solo.
+#
+# Cada uno lleva escrito POR QUE hace falta. Una entrada sin justificar es una
+# direccion metida a mano para que la cobertura cuadre.
+
+# El arranque: la cabecera del cartucho (AB en 0x4000) da INIT en 0x4010.
+0x4010   # INIT, la direccion que trae la cabecera del cartucho
+
+# INIT escribe un `jp` (0xC3) en 0xFD9F y la direccion 0x687E en 0xFDA0: es
+# H.TIMI, el gancho de la interrupcion de cuadro (0x4038-0x4040).
+0x687E   # H.TIMI, enganchado por INIT
+
+# ======================================================================
+# LA TABLA DE SALTOS DE 0x958C
+# ======================================================================
+# 0x9576-0x958B: HL = indice*3 + 0x958C (o 0x9598 si el byte apilado no es
+# cero), se apila 0x95A4 como vuelta y `jp (hl)`. En 0x958C y en 0x9598 hay
+# cuatro `jp nn` de tres bytes cada uno: ocho entradas en total.
+0x958C   # tabla A, entrada 0: jp 0x961D
+0x958F   # tabla A, entrada 1: jp 0x95CA
+0x9592   # tabla A, entrada 2: jp 0x96A4
+0x9595   # tabla A, entrada 3: jp 0x96A4
+0x9598   # tabla B, entrada 0: jp 0x95CA
+0x959B   # tabla B, entrada 1: jp 0x96BC
+0x959E   # tabla B, entrada 2: jp 0x95CA
+0x95A1   # tabla B, entrada 3: jp 0x96BC
+
+# ======================================================================
+# LA VUELTA APILADA DEL DESPACHADOR
+# ======================================================================
+# 0x9587 hace `ld de,0x95A4 / push de` antes del `jp (hl)`: cada `jp` de la
+# tabla vuelve con `ret` a 0x95A4.
+0x95A4   # vuelta apilada en 0x958A
+
+# ======================================================================
+# CODIGO HUERFANO
+# ======================================================================
+# Tramos que desensamblan a instrucciones coherentes pero a los que no se
+# llega: el trazado no entra, nadie los carga con una constante
+# (tools/quien_lee.py) y la palabra de su direccion no aparece en los 32 KB
+# (tools/apunta_a.py). Se declaran como entrada para que el listado no los
+# saque como `defb`.
+0x4420   # codigo huerfano: niega HL (ld a,h / neg / ld h,a / ld a,l / neg / ld l,a / ret)
+0x497E   # codigo huerfano: call 0x4B77 / call 0x4A8C / and 0xE3 / or c / ex af,af' / ret
+0x4FF8   # codigo huerfano: un `ret` suelto detras del `jp` de 0x4FF5
+0x5029   # codigo huerfano: pone (0xED70) a 2 y vuelve
+0x6741   # codigo huerfano: entrada alternativa a 0x6747 (ld l,a / xor e / ex af,af' / call 0x66A2)
+0x676F   # codigo huerfano: entrada alternativa a 0x6743 (ld l,a / ld a,d / and a / ex af,af' / jr)
+0x6128   # codigo huerfano: pone el bit 7 de H, guarda HL en 0xEBCD, lo quita y salta a WRTVRM (0x004A): la version con BIOS de 0x6122
+0x669C   # codigo huerfano: llama B veces a 0x668E (call / djnz / ret)
+0x5C50   # codigo huerfano: set 7,c / ld a,(0xECF1) / ld hl,0xC432 ...
+0x6DFE   # codigo huerfano: push de / ld c,0 / ld de,10000 / call 0x6E1F / pop de / call 0x6E2A / call 0x6DF7
+0x7E91   # codigo huerfano: escribe un 0 en 0x6BAD (ROM: no hace nada) y copia 0x6BAE/0x6BAF a 0xC7F2/0xC822; salta a 0x7578
+0x8C45   # codigo huerfano: espera a que (0xEF6C) sea cero (a que acabe el sonido)
+0x96F5   # codigo huerfano: call 0x4ED8 / ld hl,0xEBD6 / cp (hl) / jr nz / xor a / ret, y en 0x9700 call 0x4DC1
+0x9950   # codigo huerfano: ld a,h / and a / ret p / jp 0x4418
+
+# ======================================================================
+# CODIGO HUERFANO DE LA VERSION "a"
+# ======================================================================
+# Lo que la primera version llamaba y esta ya no: tras comparar las dos ROM
+# (tools/traduce_version.py) las rutinas siguen ahi, sin nadie que las llame
+# (tools/apunta_a.py: ninguna palabra de los 32 KB las nombra).
+0x4D92   # codigo huerfano: limita la X con la ventana en el centro (ld a,(0xECE6) / cp 0x80 / ret nz ...); la primera version lo llamaba desde 0x4CDB
+0x5D65   # codigo huerfano: lo que queda del rectangulo de canasta de la primera version (bit 4,(hl) / jr z ...); ya no lo llama nadie

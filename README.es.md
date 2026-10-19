@@ -48,4 +48,4 @@ las herramientas. La ROM no se distribuye. Ver [AVISO-LEGAL.md](AVISO-LEGAL.md).
 
 ## La otra ROM
 
-La ROM corregida GoodMSX `[a]` es el mismo programa reensamblado y con arreglos (faltas, puntuacion, defensa). Que cambia: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md). Su parche MSX2 esta en el repositorio del parche.
+La ROM corregida GoodMSX `[a]` es el mismo programa reensamblado y con arreglos (faltas, puntuacion, defensa). Que cambia: [DIFERENCIAS-ROM-A.md](DIFERENCIAS-ROM-A.md). Su desensamblado comentado propio esta en [`rom_a/`](rom_a/) (`make -C rom_a`) y su parche MSX2 en el repositorio del parche.

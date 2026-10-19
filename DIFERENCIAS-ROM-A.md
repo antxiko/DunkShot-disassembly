@@ -3,7 +3,7 @@
 La ROM `[a]` de GoodMSX (sha256 `a9e759ae...`) es el mismo programa que la
 primera (`[!]`, sha256 `a1891e03...`) reensamblado y con arreglos. Este
 fichero dice QUE cambia y COMO se ha comprobado. Todo lo de aqui sale de
-comparar las dos ROM con `tools/traduce_version.py`. Las direcciones de la version "a" son las de su propio desensamblado, que no va en este repositorio.
+comparar las dos ROM con `tools/traduce_version.py`. Las direcciones de la version "a" son las de su desensamblado, en `rom_a/`.
 
 ## Como se ha comparado
 
